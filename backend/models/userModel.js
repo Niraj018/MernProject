@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+// Bcrypt came from "bcryptjs": "^2.4.3" package that was installed using  npm i bcrypt
 
 const userSchema = mongoose.Schema({
   name: {
