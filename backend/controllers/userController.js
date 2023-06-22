@@ -168,10 +168,66 @@ const loginStatus = asyncHandler(async (req, res) => {
   }
 });
 
+// Update user
+// this is used to change all the data from the user profile including , name password picture and bio
+
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    const { _id, name, email, description } = user;
+    user.email = email;
+    user.name = req.body.name || name;
+    user.description = req.body.description || description;
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      description: updatedUser.description,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User Not Found");
+  }
+});
+// Changing Password
+
+const changePassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found, please signup");
+  }
+  const { password, newPassword } = req.body;
+  // Validating Password is correct or not
+
+  if (!password || !newPassword) {
+    res.status(400);
+    throw new Error("Password field cannot be empty");
+  }
+
+  // Checking if the entered password is correct
+  const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
+  //  Save new Password
+  if (user && passwordIsCorrect) {
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json("Password Changed");
+  } else {
+    res.status(400);
+    throw new Error("Entered Password is incorrect ");
+  }
+});
 module.exports = {
   registerUser,
   loginUser,
   logout,
   getUser,
   loginStatus,
+  updateUser,
+  changePassword,
 };
