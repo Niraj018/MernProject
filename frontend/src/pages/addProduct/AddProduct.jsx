@@ -20,9 +20,9 @@ const initialState = {
 
     const isLoading = useSelector(selectIsLoading)
     
-    const { name , category , price , quantity } = product;
+    // const { name , category , price , quantity } = product
 
-    const handleInputChange = (e) => {
+    const handleChange = (e) => {
       const {name , value} = e.target;
       setProduct ({ ...product , [name]: value});
     };
@@ -69,7 +69,7 @@ const initialState = {
       imagePreview = {imagePreview}
       description = {description}
       setDescription = {setDescription}
-      handleInputChange = {handleInputChange}
+      handleChange = {handleChange}
       handleImageChange = {handleImageChange}
       saveProduct = {saveProduct}
 
