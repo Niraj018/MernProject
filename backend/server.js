@@ -5,8 +5,10 @@ const bodyParser = require("body-parser");
 // body parser helps us convert any information coming from front end to an object so that we can read it on backend
 const cors = require("cors");
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middleware/errorHandler");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const app = express();
 
@@ -17,13 +19,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", ""],
+    origin: ["http://localhost:5173", "*"],
     credentials: true,
   })
 );
-
+app.options("*", cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes Middleware
 app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
 
 //Routes
 
@@ -35,7 +39,7 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 
 // Connecting to Database and start server
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 
 mongoose
   .connect(process.env.MONGO_URI)
