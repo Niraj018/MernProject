@@ -3,6 +3,7 @@ import { RiProductHuntLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 import heroImg from "../../assets/inv-img.png";
+import { ShowOnLogin, ShowOnLogout } from "../../components/protect/HiddenLink";
 const Home = () => {
   return (
     <div className="home">
@@ -11,19 +12,27 @@ const Home = () => {
           <RiProductHuntLine size={35} />
         </div>
         <ul className="home-links">
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <button className="--btn --btn-primary">
-              <Link to="/login">Login</Link>
-            </button>
-          </li>
-          <li>
-            <button className="--btn --btn-primary">
-              <Link to="/dashboard">Dashboard</Link>
-            </button>
-          </li>
+          <ShowOnLogout>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+          </ShowOnLogout>
+
+          <ShowOnLogout>
+            <li>
+              <button className="--btn --btn-primary">
+                <Link to="/login">Login</Link>
+              </button>
+            </li>
+          </ShowOnLogout>
+
+          <ShowOnLogin>
+            <li>
+              <button className="--btn --btn-primary">
+                <Link to="/dashboard">Dashboard</Link>
+              </button>
+            </li>
+          </ShowOnLogin>
         </ul>
       </nav>
       {/* Hero Section */}
@@ -35,11 +44,12 @@ const Home = () => {
             Inventory management system to manage products in real time and make
             it easier to develop your business
           </p>
-          <div className="hero-buttons">
+
+          {/* <div className="hero-buttons">
             <button className="--btn --btn-secondary">
               <Link to="/dashboard">Dashboard</Link>
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="hero-image">
           <img src={heroImg} alt="Inventory"></img>

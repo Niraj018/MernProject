@@ -1,25 +1,23 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Loader from "../../components/loader/Loader";
 import ProductForm from "../../components/productMgmt/productForm/ProductForm";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createProduct,
   selectIsLoading,
 } from "../../redux/features/product/productSlice";
-
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader/Loader";
 const initialState = {
   name: "",
   category: "",
   quantity: "",
   price: "",
 };
-
 const AddProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [product, setProduct] = useState(initialState);
-  const [productImage, setProductImage] = useState("");
+  const [productImage, setproductImage] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [description, setDescription] = useState("");
 
@@ -33,24 +31,23 @@ const AddProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    setProductImage(e.target.files[0]);
+    setproductImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  const generateKSKU = (category) => {
+  const generateSKU = (category) => {
     const letter = category.slice(0, 3).toUpperCase();
     const number = Date.now();
     const sku = letter + "-" + number;
     return sku;
   };
-
   const saveProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("sku", generateKSKU(category));
+    formData.append("sku", generateSKU(category));
     formData.append("category", category);
-    formData.append("quantity", Number(quantity));
+    formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("description", description);
     formData.append("image", productImage);
@@ -61,7 +58,6 @@ const AddProduct = () => {
 
     navigate("/dashboard");
   };
-
   return (
     <div>
       {isLoading && <Loader />}
